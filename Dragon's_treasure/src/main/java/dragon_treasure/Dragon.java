@@ -20,13 +20,15 @@ import java.util.Set;
 на заданную сумму.*/
 
 public class Dragon {
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private CaveOfDragon caveOfDragon;
 
     public Dragon() {
         this.caveOfDragon = new CaveOfDragon();
+        createDragonsTreasures();
     }
 
-    public void createDragonsTreasures() {
+    private void createDragonsTreasures() {
         Properties property = new Properties();
         Set<Object> set;
         try {
@@ -43,32 +45,22 @@ public class Dragon {
         }
     }
 
-    public void showListOfTreasures() {
-        int index = 1;
-        for(Treasure treasure : caveOfDragon.getDragonsTreasures()) {
-            System.out.println(index + ". " + treasure);
-            index++;
-        }
-    }
-
-    public void showTheMostPreciousTreasure() {
-        caveOfDragon.calculateTheMostPreciousTreasure();
-    }
-
-    public void selectingTreasures(double amount) {
-        List<Treasure> dragonsTreasures = caveOfDragon.getDragonsTreasures();
-        List<Treasure> treasuresForGivenAmount = new ArrayList<>();
-        double sum = 0.0;
-        for (int i = 0; i < dragonsTreasures.size() && amount >= 0; i++) {
-            if(dragonsTreasures.get(i).getCost() <= amount) {
-                treasuresForGivenAmount.add(dragonsTreasures.get(i));
-                sum += dragonsTreasures.get(i).getCost();
-                amount -= dragonsTreasures.get(i).getCost();
+    void showCave() {
+        boolean stop = false;
+        int option = 0;
+        do{
+            System.out.println("Please make a choice:");
+            System.out.println("1. View the dragon's Treasures.");
+            System.out.println("2. View the most expensive treasure in terms of value.");
+            System.out.println("3. Selecting treasures for a given amount.");
+            try {
+                option = Integer.parseInt(reader.readLine());
+            } catch (Exception e) {
+                System.out.println("Invalid data.");
             }
-        }
-        System.out.println("The dragon's treasure to the amount of: " + sum);
-        for (Treasure treasure : treasuresForGivenAmount) {
-            System.out.println(treasure);
-        }
+            if(option >= 1 && option <= 3) stop = true;
+            else System.out.println("Please try again");
+        } while (!stop);
+        caveOfDragon.seeTheCave(option);
     }
 }
